@@ -102,6 +102,63 @@ ports:
 
 ---
 
+## 🚀 STEP 2 — Start the Full MLOps Stack
+
+Once verification is complete, start all services:
+
+```bash
+docker-compose up --build
+```
+
+### Expected Startup Order
+
+The following order should appear in the logs:
+
+1. ✅ **Postgres starts** - Database backend for Airflow
+2. ✅ **Airflow scheduler & webserver start** - Workflow orchestration
+3. ✅ **MLflow server starts** - Model tracking and registry
+4. ✅ **FastAPI service loads model** - Inference API (may show warnings if no model exists yet)
+
+### Pipeline DAG Availability
+
+After all services start:
+- **Pipeline DAG becomes available in Airflow UI** (may take 1-2 minutes)
+- Navigate to http://localhost:8080 to see the `ml_retraining_pipeline` DAG
+
+**Note:** First startup may take 5-10 minutes as it:
+- Downloads Docker images
+- Initializes Airflow database
+- Builds container images
+- Sets up all services
+
+### If Something Fails
+
+If services fail to start or encounter errors:
+
+1. **Stop and clean up:**
+   ```bash
+   docker-compose down -v
+   ```
+   The `-v` flag removes volumes (clears data). Omit it if you want to keep data.
+
+2. **Fix any errors** in configuration files or environment
+
+3. **Restart:**
+   ```bash
+   docker-compose up --build
+   ```
+
+4. **Check logs** for specific service issues:
+   ```bash
+   docker-compose logs [service-name]
+   # Examples:
+   docker-compose logs airflow-webserver
+   docker-compose logs mlflow
+   docker-compose logs fastapi
+   ```
+
+---
+
 ## 🚀 Quick Start
 
 ### Prerequisites
