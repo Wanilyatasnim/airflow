@@ -6,6 +6,60 @@
 - At least 4GB RAM available
 - Ports 8080, 5000, and 8000 available
 
+## STEP 1 — Verify Environment Before Running
+
+**⚠️ IMPORTANT: Complete these checks before starting services!**
+
+### ✔️ 1.1. Docker Desktop is Running
+
+Without Docker daemon running → nothing will start.
+
+**Check Docker status:**
+```bash
+docker ps
+```
+
+If you see an error, start Docker Desktop and wait for it to fully start.
+
+### ✔️ 1.2. Validate Docker Compose Configuration
+
+Run this in the project root to verify your YAML is valid:
+
+```bash
+docker-compose config
+```
+
+✅ If you see no errors → your YAML is valid  
+❌ If you see errors → fix them before proceeding
+
+### ✔️ 1.3. Check Ports are Free
+
+Verify these ports are available:
+
+- **8080** → Airflow UI
+- **5000** → MLflow UI  
+- **8000** → FastAPI service
+
+**Check ports (Windows PowerShell):**
+```powershell
+netstat -ano | findstr :8080
+netstat -ano | findstr :5000
+netstat -ano | findstr :8000
+```
+
+**Check ports (Linux/Mac):**
+```bash
+lsof -i :8080
+lsof -i :5000
+lsof -i :8000
+```
+
+**If ports are in use:**
+- Stop the conflicting service, OR
+- Modify port mappings in `docker-compose.yml`
+
+---
+
 ## Step-by-Step Setup
 
 ### 1. Start All Services
@@ -184,4 +238,5 @@ For issues or questions:
 1. Check the logs: `docker-compose logs`
 2. Review the README.md for detailed documentation
 3. Check Airflow/MLflow/FastAPI official documentation
+
 

@@ -41,13 +41,74 @@ mlops-retraining/
 └── docker-compose.yml
 ```
 
+## ✅ STEP 1 — Verify Environment Before Running
+
+**Before running `docker-compose up`, verify your environment:**
+
+### ✔️ 1.1. Docker Desktop is Running
+
+Without Docker daemon running → nothing will start.
+
+**Check Docker status:**
+```bash
+docker ps
+```
+
+If you see an error like "Cannot connect to the Docker daemon", start Docker Desktop.
+
+### ✔️ 1.2. Validate Docker Compose Configuration
+
+Run this in the project root to verify your YAML is valid:
+
+```bash
+docker-compose config
+```
+
+If you see no errors, your `docker-compose.yml` is valid. If there are errors, fix them before proceeding.
+
+### ✔️ 1.3. Check Ports are Free
+
+The following ports must be available:
+
+- **8080** → Airflow UI
+- **5000** → MLflow UI
+- **8000** → FastAPI service
+
+**Check if ports are in use:**
+
+**On Windows (PowerShell):**
+```powershell
+netstat -ano | findstr :8080
+netstat -ano | findstr :5000
+netstat -ano | findstr :8000
+```
+
+**On Linux/Mac:**
+```bash
+lsof -i :8080
+lsof -i :5000
+lsof -i :8000
+```
+
+If any ports are already in use:
+1. Stop the service using that port, OR
+2. Modify the port mappings in `docker-compose.yml` (change the left side of `"PORT:PORT"`)
+
+**Example:** To change Airflow port from 8080 to 8081:
+```yaml
+ports:
+  - "8081:8080"  # Changed from "8080:8080"
+```
+
+---
+
 ## 🚀 Quick Start
 
 ### Prerequisites
 
 - Docker and Docker Compose installed
 - At least 4GB RAM available
-- Ports 8080, 5000, and 8000 available
+- Ports 8080, 5000, and 8000 available (verified in Step 1)
 
 ### Running the Project
 
@@ -170,4 +231,5 @@ Content-Type: application/json
 ## 📄 License
 
 This project is provided as-is for educational and demonstration purposes.
+
 
